@@ -1,12 +1,13 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config();
 const mongoose = require("mongoose");
+const birthdayRoute = require("./routes/birthday");
+require("dotenv").config();
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+mongoose.connect(process.env.MONGO_URI, {}, (err) => {
+  if (err) console.log(err);
+  else console.log("MongoDB is connected");
 });
 app.use(cors());
 
@@ -20,11 +21,13 @@ app.use((req, res, next) => {
   return next();
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// middleware
+app.use(express.json());
+
+// routes
+app.use(birthdayRoute);
 
 const port = process.env.PORT;
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });
