@@ -5,10 +5,14 @@ const mongoose = require("mongoose");
 const birthdayRoute = require("./routes/birthday");
 require("dotenv").config();
 
-mongoose.connect(process.env.MONGO_URI, {}, (err) => {
-  if (err) console.log(err);
-  else console.log("MongoDB is connected");
-});
+mongoose.connect(
+  process.env.MONGO_URI,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (err) => {
+    if (err) console.log(err);
+    else console.log("MongoDB is connected");
+  }
+);
 app.use(cors());
 
 app.use((req, res, next) => {
