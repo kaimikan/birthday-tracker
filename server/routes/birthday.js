@@ -37,4 +37,34 @@ router.get("/", async (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
+//edit birthday
+router.put("/:id", async (req, res) => {
+  const birthday = await Birthday.findOne({
+    _id: req.params.id,
+  });
+
+  if (!birthday) {
+    return res.status(201).send("Birthday does not exist");
+  }
+
+  try {
+    await Birthday.findOneAndUpdate(
+      {
+        _id: birthday._id,
+      },
+      {
+        $set: {
+          person: req.body.person,
+          date: req.body.date,
+          category: req.body.category,
+          status: req.body.status,
+        },
+      }
+    );
+    return res.status(200).send("Updated!");
+  } catch (error) {
+    console.log(error);
+    return res.status(201).send("Unsuccessfull update");
+  }
+});
 module.exports = router;

@@ -38,6 +38,42 @@ const MainPage = () => {
       .catch((err) => console.log(err));
   };
 
+  const toggleEditForm = async (id) => {
+    var editForm = document.getElementById("form_" + id);
+    if (editForm.style.display === "none") {
+      editForm.style.display = "block";
+    } else {
+      editForm.style.display = "none";
+    }
+  };
+
+  const еditBirthday = async (e) => {
+    e.preventDefault();
+    const id = e.target.id.value;
+    console.log(id);
+    const birthday = {
+      person: e.target.person.value,
+      date: e.target.date.value,
+      category: e.target.category.value,
+      status: e.target.status.value,
+    };
+    let updatedBirthdays = birthdaysState;
+    // TODO update state so client is dynamically update
+    updatedBirthdays.forEach((bday, index) => {
+      if (bday._id === id) {
+        console.log("before" + updatedBirthdays[index].person);
+        console.log("founbd a amtch for" + bday.person);
+        updatedBirthdays[index] = birthday;
+        console.log("after" + updatedBirthdays[index].person);
+      }
+    });
+    setBirthdaysState(updatedBirthdays);
+    await axios
+      .put(`${apiAddress}/${id}`, birthday)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
   const removeBirthday = async (id) => {
     console.log(id);
     let updatedBirthdays = birthdaysState.filter(
@@ -58,12 +94,45 @@ const MainPage = () => {
           <li key={birthday._id}>
             {birthday.person} {birthday.date} {birthday.category}{" "}
             <button
+              key={`removebtn_${birthday._id}`}
               onClick={() => {
                 removeBirthday(birthday._id);
               }}
             >
               X
             </button>
+            <button
+              key={`editbtn_${birthday._id}`}
+              onClick={() => {
+                toggleEditForm(birthday._id);
+              }}
+            >
+              ~
+            </button>
+            <form
+              onSubmit={еditBirthday}
+              method="put"
+              id={`form_${birthday._id}`}
+              key={`formkey_${birthday._id}`}
+            >
+              <input
+                type="text"
+                name="id"
+                style={{ display: "none" }}
+                placeholder="ID"
+                value={birthday._id}
+                readOnly
+              />
+              <input type="text" name="person" placeholder="Name" />
+              <input type="date" name="date" />
+              <select name="category">
+                <option value="family">Family</option>
+                <option value="friend">Friend</option>
+                <option value="other">Other</option>
+              </select>
+              <input type="number" name="status" placeholder="Status" />
+              <button type="submit">Edit Birthday</button>
+            </form>
           </li>
         ))}
       </ul>
