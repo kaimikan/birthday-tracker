@@ -38,7 +38,7 @@ const MainPage = () => {
       .catch((err) => console.log(err));
   };
 
-  const toggleEditForm = async (id) => {
+  const toggleEditForm = (id) => {
     var editForm = document.getElementById("form_" + id);
     if (editForm.style.display === "none") {
       editForm.style.display = "block";
@@ -57,17 +57,28 @@ const MainPage = () => {
       category: e.target.category.value,
       status: e.target.status.value,
     };
+
+    let bdays = [...birthdaysState];
+    let bday;
+
     let updatedBirthdays = birthdaysState;
     // TODO update state so client is dynamically update
-    updatedBirthdays.forEach((bday, index) => {
+    birthdaysState.forEach((bday, index) => {
       if (bday._id === id) {
-        console.log("before" + updatedBirthdays[index].person);
+        bday = { ...bdays[index] };
+        bday.person = birthday.person;
+        bday.date = birthday.date;
+        bday.category = birthday.category;
+        bday.status = birthday.status;
+        bdays[index] = bday;
+        /* console.log("before" + updatedBirthdays[index].person);
         console.log("founbd a amtch for" + bday.person);
         updatedBirthdays[index] = birthday;
-        console.log("after" + updatedBirthdays[index].person);
+        console.log("after" + updatedBirthdays[index].person); */
       }
     });
-    setBirthdaysState(updatedBirthdays);
+    setBirthdaysState(bdays);
+    toggleEditForm(id);
     await axios
       .put(`${apiAddress}/${id}`, birthday)
       .then((res) => console.log(res))
@@ -114,6 +125,7 @@ const MainPage = () => {
               method="put"
               id={`form_${birthday._id}`}
               key={`formkey_${birthday._id}`}
+              style={{ display: "none" }}
             >
               <input
                 type="text"
