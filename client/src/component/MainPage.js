@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
 import apiAddress from "../globals/apiAddress";
 import axios from "axios";
+import Select from "react-select";
 
 const MainPage = () => {
   const [birthdaysState, setBirthdaysState] = useState([]);
+  const options = [
+    { value: "family", label: "family" },
+    { value: "friend", label: "friend" },
+    { value: "other", label: "other" },
+  ];
   useEffect(() => {
     getBirthdays();
   }, []);
@@ -15,9 +20,7 @@ const MainPage = () => {
       .then((res) => {
         console.log(res.data);
         setBirthdaysState(res.data);
-        birthdaysState.map((birthday) => {
-          console.log(birthday.person);
-        });
+        birthdaysState.forEach((birthday) => console.log(birthday.person));
       })
       .catch((err) => console.log(err));
   };
@@ -36,6 +39,15 @@ const MainPage = () => {
       .post(`${apiAddress}`, birthday)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
+  };
+
+  const toggleAddForm = () => {
+    var editForm = document.getElementById("add_form");
+    if (editForm.style.display === "none") {
+      editForm.style.display = "block";
+    } else {
+      editForm.style.display = "none";
+    }
   };
 
   const toggleEditForm = (id) => {
@@ -57,12 +69,10 @@ const MainPage = () => {
       category: e.target.category.value,
       status: e.target.status.value,
     };
+    console.log(e.target.category.value);
 
     let bdays = [...birthdaysState];
-    let bday;
 
-    let updatedBirthdays = birthdaysState;
-    // TODO update state so client is dynamically update
     birthdaysState.forEach((bday, index) => {
       if (bday._id === id) {
         bday = { ...bdays[index] };
@@ -71,13 +81,10 @@ const MainPage = () => {
         bday.category = birthday.category;
         bday.status = birthday.status;
         bdays[index] = bday;
-        /* console.log("before" + updatedBirthdays[index].person);
-        console.log("founbd a amtch for" + bday.person);
-        updatedBirthdays[index] = birthday;
-        console.log("after" + updatedBirthdays[index].person); */
       }
     });
     setBirthdaysState(bdays);
+    console.log("did it change state??? ", birthdaysState);
     toggleEditForm(id);
     await axios
       .put(`${apiAddress}/${id}`, birthday)
@@ -100,7 +107,20 @@ const MainPage = () => {
   return (
     <>
       <ul>
-        <h1>asdasd</h1>
+        <h1>
+          Birthdays/Events <button onClick={toggleAddForm}>+</button>
+        </h1>
+        <form
+          id="add_form"
+          onSubmit={addBirthday}
+          style={{ display: "none" }}
+          method="post"
+        >
+          <input type="text" name="person" placeholder="Name" />
+          <input type="date" name="date" />
+          <Select name="category" placeholder="Category..." options={options} />
+          <button type="submit">Add Birthday</button>
+        </form>
         {birthdaysState.map((birthday) => (
           <li key={birthday._id}>
             {birthday.person} {birthday.date} {birthday.category}{" "}
@@ -126,6 +146,10 @@ const MainPage = () => {
               id={`form_${birthday._id}`}
               key={`formkey_${birthday._id}`}
               style={{ display: "none" }}
+              defaultValue={{
+                label: birthday.category,
+                value: birthday.category,
+              }}
             >
               <input
                 type="text"
@@ -135,29 +159,37 @@ const MainPage = () => {
                 value={birthday._id}
                 readOnly
               />
-              <input type="text" name="person" placeholder="Name" />
-              <input type="date" name="date" />
-              <select name="category">
-                <option value="family">Family</option>
-                <option value="friend">Friend</option>
-                <option value="other">Other</option>
-              </select>
-              <input type="number" name="status" placeholder="Status" />
+              <input
+                type="text"
+                name="person"
+                placeholder="Name"
+                defaultValue={birthday.person}
+              />
+              <input
+                type="date"
+                name="date"
+                defaultValue={birthday.date.substr(0, 10)}
+              />
+              <Select
+                name="category"
+                placeholder="Category..."
+                defaultValue={{
+                  value: birthday.category,
+                  label: birthday.category,
+                }}
+                options={options}
+              />
+              <input
+                type="number"
+                name="status"
+                placeholder="Status"
+                defaultValue={birthday.status}
+              />
               <button type="submit">Edit Birthday</button>
             </form>
           </li>
         ))}
       </ul>
-      <form onSubmit={addBirthday} method="post">
-        <input type="text" name="person" placeholder="Name" />
-        <input type="date" name="date" />
-        <select name="category">
-          <option value="family">Family</option>
-          <option value="friend">Friend</option>
-          <option value="other">Other</option>
-        </select>
-        <button type="submit">Add Birthday</button>
-      </form>
     </>
   );
 };
