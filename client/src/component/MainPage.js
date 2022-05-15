@@ -14,30 +14,61 @@ const MainPage = () => {
     getBirthdays();
   }, []);
 
+  const sortBirthdaysByDate = (order = "asc", bdays = []) => {
+    // order can be asc or desc
+    let sortedBdays;
+    bdays.length === 0
+      ? (sortedBdays = [...birthdaysState])
+      : (sortedBdays = [...bdays]);
+
+    sortedBdays.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+    if (order === "desc") sortedBdays.reverse();
+    console.log(birthdaysState);
+    console.log("sorted after ", order, sortedBdays);
+    setBirthdaysState(sortedBdays);
+  };
+
   const getBirthdays = async () => {
     await axios
       .get(`${apiAddress}`)
       .then((res) => {
-        console.log(res.data);
-        setBirthdaysState(res.data);
-        birthdaysState.forEach((birthday) => console.log(birthday.person));
+        // remove time and timezone from date
+        let shortDateBdays = [...res.data];
+        let bday;
+        shortDateBdays.forEach((birthday, index) => {
+          bday = { ...shortDateBdays[index] };
+          bday.date = birthday.date.substr(0, 10);
+          shortDateBdays[index] = bday;
+        });
+        //console.log(res.data);
+        sortBirthdaysByDate("asc", shortDateBdays);
+        //birthdaysState.forEach((birthday) => console.log(birthday.person));
       })
       .catch((err) => console.log(err));
   };
 
   const addBirthday = async (e) => {
     e.preventDefault();
-    const birthday = {
+    let birthday = {
       person: e.target.person.value,
       date: e.target.date.value,
       category: e.target.category.value,
       status: 0,
     };
-    console.log(birthday);
-    setBirthdaysState([...birthdaysState, birthday]);
+
     await axios
       .post(`${apiAddress}`, birthday)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        // add mongo id onto state array element so we can edit and remove without need for refresh
+        birthday._id = res.data._id;
+
+        console.log(birthday);
+        sortBirthdaysByDate("asc", [...birthdaysState, birthday]);
+        toggleAddForm();
+      })
       .catch((err) => console.log(err));
   };
 
@@ -83,7 +114,7 @@ const MainPage = () => {
         bdays[index] = bday;
       }
     });
-    setBirthdaysState(bdays);
+    sortBirthdaysByDate("asc", bdays);
     console.log("did it change state??? ", birthdaysState);
     toggleEditForm(id);
     await axios
@@ -107,6 +138,21 @@ const MainPage = () => {
   return (
     <>
       <ul>
+        sort:
+        <button
+          onClick={() => {
+            sortBirthdaysByDate("asc");
+          }}
+        >
+          asc
+        </button>
+        <button
+          onClick={() => {
+            sortBirthdaysByDate("desc");
+          }}
+        >
+          desc
+        </button>
         <h1>
           Birthdays/Events <button onClick={toggleAddForm}>+</button>
         </h1>
@@ -123,7 +169,7 @@ const MainPage = () => {
         </form>
         {birthdaysState.map((birthday) => (
           <li key={birthday._id}>
-            {birthday.person} {birthday.date} {birthday.category}{" "}
+            <b> {birthday.person} </b> {birthday.date} {birthday.category}{" "}
             <button
               key={`removebtn_${birthday._id}`}
               onClick={() => {
