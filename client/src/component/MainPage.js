@@ -5,6 +5,12 @@ import Select from "react-select";
 
 const MainPage = () => {
   const [birthdaysState, setBirthdaysState] = useState([]);
+  const currentDate = new Date();
+  const currentDateString = `${currentDate.getDate()}/${
+    currentDate.getMonth() + 1
+  }/${currentDate.getFullYear()}`;
+  const [closestBirthdaysState, setClosestBirthdaysState] = useState([]);
+
   const options = [
     { value: "family", label: "family" },
     { value: "friend", label: "friend" },
@@ -13,6 +19,27 @@ const MainPage = () => {
   useEffect(() => {
     getBirthdays();
   }, []);
+
+  const findClosestBirthday = (bdays) => {
+    let closestBirthdayHolder = [];
+    let closestDateHolder = new Date();
+    closestDateHolder.setFullYear(0);
+    closestDateHolder.setHours(0, 0, 0, 0);
+
+    bdays.forEach((bday) => {
+      let editedBday = new Date(bday.date);
+      editedBday.setHours(0, 0, 0, 0);
+      if (editedBday.getTime() > closestDateHolder.getTime()) {
+        closestDateHolder = editedBday;
+        closestBirthdayHolder = [];
+        closestBirthdayHolder.push(bday);
+      } else if (editedBday.getTime() === closestDateHolder.getTime()) {
+        closestBirthdayHolder.push(bday);
+      }
+    });
+
+    setClosestBirthdaysState(closestBirthdayHolder);
+  };
 
   const sortBirthdaysByDate = (order = "asc", bdays = []) => {
     // order can be asc or desc
@@ -28,6 +55,7 @@ const MainPage = () => {
     console.log(birthdaysState);
     console.log("sorted after ", order, sortedBdays);
     setBirthdaysState(sortedBdays);
+    findClosestBirthday(sortedBdays);
   };
 
   const getBirthdays = async () => {
@@ -129,6 +157,7 @@ const MainPage = () => {
       (birthday) => birthday._id !== id
     );
     setBirthdaysState(updatedBirthdays);
+    findClosestBirthday(updatedBirthdays);
     await axios
       .delete(`${apiAddress}/${id}`)
       .then((res) => console.log(res))
@@ -137,6 +166,23 @@ const MainPage = () => {
 
   return (
     <>
+      <p>Today is: {currentDateString}</p>
+      <p>
+        Closest{" "}
+        {closestBirthdaysState.length > 1 ? (
+          <>birthdays are</>
+        ) : (
+          <>birtday is</>
+        )}
+        :{" "}
+        {closestBirthdaysState.map((bday) => (
+          <>
+            <p>
+              {bday.person} on {bday.date}
+            </p>
+          </>
+        ))}
+      </p>
       <ul>
         sort:
         <button
