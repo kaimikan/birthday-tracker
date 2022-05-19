@@ -1,0 +1,27 @@
+.button {
+  background: $off-white;
+  border: none;
+  color: $dark-grey;
+  display: inline-block;
+  font-size: $font-size-l;
+  font-weight: 300;
+  line-height: 1;
+  padding: $s-size;
+  border-radius: 15%;
+  margin: 10px;
+  text-decoration: none;
+}
+
+.button--secondary {
+  background: #888;
+  color: $off-white;
+}
+
+.button--secondary-2 {
+  background: rgb(77, 146, 220);
+  color: $off-white;
+}
+
+.button--link {
+  background: none;
+}

@@ -186,6 +186,7 @@ const MainPage = () => {
       <ul>
         sort:
         <button
+          className="button"
           onClick={() => {
             sortBirthdaysByDate("asc");
           }}
@@ -193,6 +194,7 @@ const MainPage = () => {
           asc
         </button>
         <button
+          className="button"
           onClick={() => {
             sortBirthdaysByDate("desc");
           }}
@@ -200,7 +202,10 @@ const MainPage = () => {
           desc
         </button>
         <h1>
-          Birthdays/Events <button onClick={toggleAddForm}>+</button>
+          Birthdays/Events{" "}
+          <button className="button" onClick={toggleAddForm}>
+            +
+          </button>
         </h1>
         <form
           id="add_form"
@@ -211,12 +216,15 @@ const MainPage = () => {
           <input type="text" name="person" placeholder="Name" />
           <input type="date" name="date" />
           <Select name="category" placeholder="Category..." options={options} />
-          <button type="submit">Add Birthday</button>
+          <button className="button" type="submit">
+            Add Birthday
+          </button>
         </form>
         {birthdaysState.map((birthday) => (
           <li key={birthday._id}>
             <b> {birthday.person} </b> {birthday.date} {birthday.category}{" "}
             <button
+              className="button button--secondary"
               key={`removebtn_${birthday._id}`}
               onClick={() => {
                 removeBirthday(birthday._id);
@@ -225,6 +233,7 @@ const MainPage = () => {
               X
             </button>
             <button
+              className="button button--secondary-2"
               key={`editbtn_${birthday._id}`}
               onClick={() => {
                 toggleEditForm(birthday._id);
@@ -277,7 +286,9 @@ const MainPage = () => {
                 placeholder="Status"
                 defaultValue={birthday.status}
               />
-              <button type="submit">Edit Birthday</button>
+              <button className="button" type="submit">
+                Edit Birthday
+              </button>
             </form>
           </li>
         ))}
