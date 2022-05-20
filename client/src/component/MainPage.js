@@ -166,23 +166,37 @@ const MainPage = () => {
 
   return (
     <>
-      <p>Today is: {currentDateString}</p>
-      <p>
-        Closest{" "}
-        {closestBirthdaysState.length > 1 ? (
-          <>birthdays are</>
-        ) : (
-          <>birtday is</>
-        )}
-        :{" "}
-        {closestBirthdaysState.map((bday) => (
-          <>
-            <p>
-              {bday.person} on {bday.date}
-            </p>
-          </>
-        ))}
-      </p>
+      <div>
+        <div className="page-header">
+          <div className="content-container">
+            <div className="page-header__content">
+              <h3 className="page-header__title">
+                <div>Today is: {currentDateString}</div>
+              </h3>
+              <div className="page-header__actions">
+                <div>
+                  <b>Closest </b>
+                  {closestBirthdaysState.length > 1 ? (
+                    <b>birthdays are</b>
+                  ) : (
+                    <b>birtday is</b>
+                  )}
+                  <b>:</b>{" "}
+                  {closestBirthdaysState.map((bday) => (
+                    <>
+                      <div>
+                        {bday.person} on {bday.date}
+                      </div>
+                    </>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p></p>
+      <p></p>
       <ul>
         sort:
         <button

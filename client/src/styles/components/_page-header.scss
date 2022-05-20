@@ -1,0 +1,25 @@
+.page-header {
+  background: $off-grey;
+  color: $off-white;
+  margin-bottom: $s-size;
+  padding: $s-size 0;
+}
+
+.page-header__content {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.page-header__title {
+  font-weight: 300;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70vw;
+}
+
+.page-header__actions {
+  margin-top: 0;
+}

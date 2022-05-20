@@ -6,7 +6,13 @@ import "./styles/styles.scss";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <div>Hello, here are some birthdays!</div>
+    <header className="header">
+      <div className="content-container">
+        <div className="header__content">
+          <h3 className="header__title">Bday Tracker</h3>
+        </div>
+      </div>
+    </header>
     <MainPage />
   </React.StrictMode>
 );
