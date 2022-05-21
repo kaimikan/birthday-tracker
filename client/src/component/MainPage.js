@@ -223,39 +223,56 @@ const MainPage = () => {
         </h1>
         <form
           id="add_form"
+          className="form"
           onSubmit={addBirthday}
           style={{ display: "none" }}
           method="post"
         >
-          <input type="text" name="person" placeholder="Name" />
-          <input type="date" name="date" />
-          <Select name="category" placeholder="Category..." options={options} />
+          <input
+            className="text-input"
+            type="text"
+            name="person"
+            placeholder="Name"
+          />
+          <input className="text-input" type="date" name="date" />
+          <Select
+            className="select"
+            name="category"
+            placeholder="Category..."
+            options={options}
+          />
           <button className="button" type="submit">
             Add Birthday
           </button>
         </form>
         {birthdaysState.map((birthday) => (
-          <li key={birthday._id}>
-            <b> {birthday.person} </b> {birthday.date} {birthday.category}{" "}
-            <button
-              className="button button--secondary"
-              key={`removebtn_${birthday._id}`}
-              onClick={() => {
-                removeBirthday(birthday._id);
-              }}
-            >
-              X
-            </button>
-            <button
-              className="button button--secondary-2"
-              key={`editbtn_${birthday._id}`}
-              onClick={() => {
-                toggleEditForm(birthday._id);
-              }}
-            >
-              ~
-            </button>
+          <li key={birthday._id} className="list-item">
+            <b className="list-item__title"> {birthday.person} </b>{" "}
+            <span className="list-item__subtitle">
+              {birthday.date} {birthday.category}{" "}
+            </span>
+            <div>
+              <button
+                className="button button--secondary"
+                key={`removebtn_${birthday._id}`}
+                onClick={() => {
+                  removeBirthday(birthday._id);
+                }}
+              >
+                X
+              </button>
+              <button
+                className="button button--secondary-2"
+                key={`editbtn_${birthday._id}`}
+                onClick={() => {
+                  toggleEditForm(birthday._id);
+                }}
+              >
+                ~
+              </button>
+            </div>
             <form
+              className="form"
               onSubmit={еditBirthday}
               method="put"
               id={`form_${birthday._id}`}
@@ -269,6 +286,7 @@ const MainPage = () => {
               <input
                 type="text"
                 name="id"
+                className="text-input"
                 style={{ display: "none" }}
                 placeholder="ID"
                 value={birthday._id}
@@ -277,16 +295,19 @@ const MainPage = () => {
               <input
                 type="text"
                 name="person"
+                className="text-input"
                 placeholder="Name"
                 defaultValue={birthday.person}
               />
               <input
                 type="date"
                 name="date"
+                className="text-input"
                 defaultValue={birthday.date.substr(0, 10)}
               />
               <Select
                 name="category"
+                className="select"
                 placeholder="Category..."
                 defaultValue={{
                   value: birthday.category,
@@ -297,10 +318,11 @@ const MainPage = () => {
               <input
                 type="number"
                 name="status"
+                className="text-input"
                 placeholder="Status"
                 defaultValue={birthday.status}
               />
-              <button className="button" type="submit">
+              <button className="button button--secondary" type="submit">
                 Edit Birthday
               </button>
             </form>
