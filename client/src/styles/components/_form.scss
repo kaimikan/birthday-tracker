@@ -1,6 +1,6 @@
 .form {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   /* select all direct children of form */
   > * {
     margin-bottom: $s-size;

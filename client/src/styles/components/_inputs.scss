@@ -1,6 +1,8 @@
 .text-input {
   border: 1px solid #cacccd;
-  height: 50px;
+  height: 2.25em;
+  border-radius: 5%;
+  margin-right: 1em;
   font-size: $font-size-l;
   font-weight: 300;
   padding: $s-size;
@@ -9,4 +11,9 @@
 .select {
   /* @extend .text-input; */
   width: 50%;
+}
+
+.select-right-input {
+  /* to compensate for weird styling of  */
+  margin-left: 1em;
 }

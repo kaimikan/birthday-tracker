@@ -103,7 +103,7 @@ const MainPage = () => {
   const toggleAddForm = () => {
     var editForm = document.getElementById("add_form");
     if (editForm.style.display === "none") {
-      editForm.style.display = "block";
+      editForm.style.display = "flex";
     } else {
       editForm.style.display = "none";
     }
@@ -112,7 +112,7 @@ const MainPage = () => {
   const toggleEditForm = (id) => {
     var editForm = document.getElementById("form_" + id);
     if (editForm.style.display === "none") {
-      editForm.style.display = "block";
+      editForm.style.display = "flex";
     } else {
       editForm.style.display = "none";
     }
@@ -195,35 +195,37 @@ const MainPage = () => {
           </div>
         </div>
       </div>
-      <p></p>
-      <p></p>
       <ul>
-        sort:
-        <button
-          className="button"
-          onClick={() => {
-            sortBirthdaysByDate("asc");
-          }}
-        >
-          asc
-        </button>
-        <button
-          className="button"
-          onClick={() => {
-            sortBirthdaysByDate("desc");
-          }}
-        >
-          desc
-        </button>
-        <h1>
-          Birthdays/Events{" "}
-          <button className="button" onClick={toggleAddForm}>
-            +
-          </button>
-        </h1>
+        <div className="content-container page-header__content">
+          <h1>
+            Birthdays/Events{" "}
+            <button className="button" onClick={toggleAddForm}>
+              +
+            </button>
+          </h1>
+          <div>
+            sort:
+            <button
+              className="button"
+              onClick={() => {
+                sortBirthdaysByDate("asc");
+              }}
+            >
+              asc
+            </button>
+            <button
+              className="button"
+              onClick={() => {
+                sortBirthdaysByDate("desc");
+              }}
+            >
+              desc
+            </button>
+          </div>
+        </div>
         <form
           id="add_form"
-          className="form"
+          className="form content-container"
           onSubmit={addBirthday}
           style={{ display: "none" }}
           method="post"
@@ -241,38 +243,40 @@ const MainPage = () => {
             placeholder="Category..."
             options={options}
           />
-          <button className="button" type="submit">
-            Add Birthday
+          <button className="button select-right-input" type="submit">
+            Add
           </button>
         </form>
         {birthdaysState.map((birthday) => (
-          <li key={birthday._id} className="list-item">
-            <b className="list-item__title"> {birthday.person} </b>{" "}
-            <span className="list-item__subtitle">
-              {birthday.date} {birthday.category}{" "}
-            </span>
-            <div>
-              <button
-                className="button button--secondary"
-                key={`removebtn_${birthday._id}`}
-                onClick={() => {
-                  removeBirthday(birthday._id);
-                }}
-              >
-                X
-              </button>
-              <button
-                className="button button--secondary-2"
-                key={`editbtn_${birthday._id}`}
-                onClick={() => {
-                  toggleEditForm(birthday._id);
-                }}
-              >
-                ~
-              </button>
-            </div>
+          <>
+            <li key={birthday._id} className="list-item">
+              <b className="list-item__title"> {birthday.person} </b>{" "}
+              <span className="list-item__subtitle">
+                {birthday.date} {birthday.category}{" "}
+              </span>
+              <div>
+                <button
+                  className="button button--secondary"
+                  key={`removebtn_${birthday._id}`}
+                  onClick={() => {
+                    removeBirthday(birthday._id);
+                  }}
+                >
+                  X
+                </button>
+                <button
+                  className="button button--secondary-2"
+                  key={`editbtn_${birthday._id}`}
+                  onClick={() => {
+                    toggleEditForm(birthday._id);
+                  }}
+                >
+                  ~
+                </button>
+              </div>
+            </li>
             <form
-              className="form"
+              className="form content-container"
               onSubmit={еditBirthday}
               method="put"
               id={`form_${birthday._id}`}
@@ -318,15 +322,15 @@ const MainPage = () => {
               <input
                 type="number"
                 name="status"
-                className="text-input"
+                className="text-input select-right-input"
                 placeholder="Status"
                 defaultValue={birthday.status}
               />
               <button className="button button--secondary" type="submit">
-                Edit Birthday
+                Edit
               </button>
             </form>
-          </li>
+          </>
         ))}
       </ul>
     </>
