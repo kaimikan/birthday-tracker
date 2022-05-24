@@ -250,7 +250,11 @@ const MainPage = () => {
         {birthdaysState.map((birthday) => (
           <>
             <li key={birthday._id} className="list-item">
-              <b className="list-item__title"> {birthday.person} </b>{" "}
+              <span>
+                <img src="../../bdaycake.png" className="avatar" alt="avatar" />
+
+                <b className="list-item__title">{birthday.person} </b>
+              </span>
               <span className="list-item__subtitle">
                 {birthday.date} {birthday.category}{" "}
               </span>

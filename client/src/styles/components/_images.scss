@@ -1,0 +1,9 @@
+.avatar {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  max-height: $l-size;
+  max-width: $l-size;
+  border: 2.5px solid $off-grey;
+}
