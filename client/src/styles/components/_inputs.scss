@@ -8,6 +8,14 @@
   padding: $s-size;
 }
 
+.file-input {
+  height: 2.25em;
+  margin-right: 1em;
+  font-size: $font-size-l;
+  font-weight: 300;
+  padding: $s-size/2 0;
+}
+
 .select {
   /* @extend .text-input; */
   width: 50%;

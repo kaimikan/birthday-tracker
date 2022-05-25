@@ -243,6 +243,11 @@ const MainPage = () => {
             placeholder="Category..."
             options={options}
           />
+          <input
+            type="file"
+            name="image"
+            className="file-input  select-right-input"
+          />
           <button className="button select-right-input" type="submit">
             Add
           </button>
@@ -330,6 +335,7 @@ const MainPage = () => {
                 placeholder="Status"
                 defaultValue={birthday.status}
               />
+              <input type="file" name="image" className="file-input" />
               <button className="button button--secondary" type="submit">
                 Edit
               </button>
