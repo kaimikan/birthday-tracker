@@ -1,7 +1,22 @@
 const express = require("express");
 const Birthday = require("../models/birthday");
+const multer = require("multer");
 
 const router = express.Router();
+
+const storage = multer.memoryStorage();
+const upload = multer({
+  limits: {
+    // 1MB
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
+      cb(new Error("Upload a .jpg, .jpeg, or .png file"));
+    cb(undefined, true);
+  },
+  storage,
+});
 
 //add birthday
 router.post("/", async (req, res) => {

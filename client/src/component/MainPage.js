@@ -84,6 +84,7 @@ const MainPage = () => {
       date: e.target.date.value,
       category: e.target.category.value,
       status: 0,
+      profilePic: e.target.image[0] || null,
     };
 
     await axios
@@ -127,6 +128,7 @@ const MainPage = () => {
       date: e.target.date.value,
       category: e.target.category.value,
       status: e.target.status.value,
+      profilePic: e.target.image[0],
     };
     console.log(e.target.category.value);
 
@@ -139,6 +141,7 @@ const MainPage = () => {
         bday.date = birthday.date;
         bday.category = birthday.category;
         bday.status = birthday.status;
+        bday.profilePic = birthday.profilePic;
         bdays[index] = bday;
       }
     });
@@ -254,6 +257,7 @@ const MainPage = () => {
         </form>
         {birthdaysState.map((birthday) => (
           <>
+            {birthday.profilePic}
             <li key={birthday._id} className="list-item">
               <span>
                 <img src="../../bdaycake.png" className="avatar" alt="avatar" />
